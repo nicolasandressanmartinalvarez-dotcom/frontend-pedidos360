@@ -12,22 +12,31 @@ export const roleGuard: CanActivateFn = (route, state) => {
         return false;
     }
 
-    const claims: any = accounts[0].idTokenClaims;
-    const userRoles: string[] = claims?.roles || [];
+    const account = accounts[0];
+    const userRoles: string[] = (account.idTokenClaims && (account.idTokenClaims as any)['roles']) || [];
+    
+    // Obtenemos los roles permitidos definidos en las rutas (app.routes.ts)
     const allowedRoles = route.data?.['roles'] as Array<string>;
 
-    if (!allowedRoles) {
+    // Si la ruta no requiere roles específicos, se permite el acceso
+    if (!allowedRoles || allowedRoles.length === 0) {
         return true;
     }
 
-    // Comprobación flexible de roles
-    const hasPermission = allowedRoles.some(role => userRoles.includes(role));
+    // Verificamos de forma flexible si el usuario posee alguno de los roles permitidos
+    const hasPermission = userRoles.some(userRole => 
+        allowedRoles.some(allowed => 
+        userRole.toUpperCase() === allowed.toUpperCase() ||
+        userRole.toLowerCase() === allowed.toLowerCase()
+        )
+    );
 
     if (hasPermission) {
         return true;
     }
 
-    alert('No tienes permisos para acceder a esta sección.');
+    // Si no tiene el rol, se le deniega el acceso y se redirige al dashboard
+    alert('Acceso denegado: No tienes el rol necesario para acceder a esta sección.');
     router.navigate(['/dashboard']);
     return false;
 };

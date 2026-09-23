@@ -26,18 +26,6 @@ export class DashboardComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) { }
 
-  get isAdmin(): boolean {
-    return this.rolesUsuario.some(r => r.toUpperCase().includes('ADMINISTRADOR') || r.toLowerCase() === 'admin');
-  }
-
-  get isOperador(): boolean {
-    return this.rolesUsuario.some(r => r.toUpperCase().includes('OPERADOR'));
-  }
-
-  get isCliente(): boolean {
-    return this.rolesUsuario.some(r => r.toUpperCase().includes('CLIENTE'));
-  }
-
   ngOnInit(): void {
     const cuenta = this.authService.instance.getActiveAccount();
     if (cuenta) {
@@ -51,7 +39,6 @@ export class DashboardComponent implements OnInit {
     }
 
     if (isPlatformBrowser(this.platformId)) {
-      // Cargar Catálogo (permitido para todos los roles)
       this.http.get<any>(`${environment.apiUrl}/api/productos`).subscribe({
         next: (respuesta) => {
           this.productos = respuesta;
@@ -68,11 +55,11 @@ export class DashboardComponent implements OnInit {
       // Cargar Pedidos
       this.http.get<any>(`${environment.apiUrl}/api/pedidos`).subscribe({
         next: (respuesta) => {
-          if (this.isCliente) {
-            // El cliente solo ve sus propios pedidos[cite: 18]
+          if (this.isCliente()) {
+            // El cliente solo ve sus propios pedidos
             this.pedidos = respuesta.filter((p: any) => p.username === this.nombreUsuario);
           } else {
-            // Admin y Operador ven todos los pedidos[cite: 18]
+            // Admin y Operador ven todos los pedidos
             this.pedidos = respuesta;
           }
           this.cdr.detectChanges();
@@ -84,17 +71,19 @@ export class DashboardComponent implements OnInit {
       });
     }
   }
+
   isAdmin(): boolean {
-    return this.rolesUsuario.includes('ROLE_ADMINISTRADOR') || this.rolesUsuario.includes('Admin');
+    return this.rolesUsuario.some(r => r.toUpperCase().includes('ADMINISTRADOR') || r.toLowerCase() === 'admin');
   }
 
   isOperador(): boolean {
-    return this.rolesUsuario.includes('ROLE_OPERADOR') || this.rolesUsuario.includes('Operador');
+    return this.rolesUsuario.some(r => r.toUpperCase().includes('OPERADOR'));
   }
 
   isCliente(): boolean {
-    return this.rolesUsuario.includes('ROLE_CLIENTE') || this.rolesUsuario.includes('Cliente');
+    return this.rolesUsuario.some(r => r.toUpperCase().includes('CLIENTE'));
   }
+
   cerrarSesion() {
     this.authService.logoutRedirect();
   }

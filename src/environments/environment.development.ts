@@ -4,4 +4,4 @@ export const environment = {
     tenantId: '1587de59-3259-4555-988c-2907c91e031c',
     redirectUri: 'http://localhost:4200',
     apiUrl: 'https://3wqexhp9xj.execute-api.us-east-1.amazonaws.com'
-};
+}; 

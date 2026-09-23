@@ -10,24 +10,23 @@ import { roleGuard } from './guards/role.guard';
 export const routes: Routes = [
     { path: '', component: LoginComponent },
     { path: 'dashboard', component: DashboardComponent, canActivate: [MsalGuard] },
-    { 
+    {
         path: 'orders', 
         component: OrdersComponent, 
         canActivate: [MsalGuard, roleGuard],
-        data: { roles: ['ROLE_ADMINISTRADOR', 'Admin', 'ROLE_CLIENTE', 'Cliente'] }
+        data: { roles: ['ROLE_ADMINISTRADOR', 'Admin', 'ROLE_OPERADOR', 'Operador'] } 
     },
     { 
         path: 'catalog', 
         component: CatalogComponent, 
         canActivate: [MsalGuard, roleGuard],
-        data: { roles: ['ROLE_ADMINISTRADOR', 'Admin', 'ROLE_OPERADOR', 'Operador', 'ROLE_CLIENTE', 'Cliente'] }
+        data: { roles: ['ROLE_ADMINISTRADOR', 'Admin', 'ROLE_OPERADOR', 'Operador'] }
     },
-
     { 
         path: 'cliente-compra', 
         component: ClienteCompraComponent, 
         canActivate: [MsalGuard, roleGuard],
-        data: { roles: ['ROLE_ADMINISTRADOR', 'Admin', 'ROLE_OPERADOR', 'Operador', 'ROLE_CLIENTE', 'Cliente'] }
+        data: { roles: ['ROLE_CLIENTE', 'Cliente', 'ROLE_ADMINISTRADOR', 'Admin'] }
     },
 
     { path: '**', redirectTo: '' }
