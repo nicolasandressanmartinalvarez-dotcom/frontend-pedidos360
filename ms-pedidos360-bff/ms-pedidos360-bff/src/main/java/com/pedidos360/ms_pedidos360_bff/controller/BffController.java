@@ -5,6 +5,8 @@ import com.pedidos360.ms_pedidos360_bff.client.PedidosClient;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
@@ -47,8 +49,16 @@ public class BffController {
         return pedidosClient.obtenerPedidos();
 
     }
+    
     @PostMapping("/productos")
     public Map<String, Object> guardarProducto(@RequestBody Map<String, Object> producto) {
         return catalogoClient.guardarProducto(producto);
+    }
+    // --- NUEVO ENDPOINT PARA CREAR UN PEDIDO ---
+    @org.springframework.web.bind.annotation.PostMapping("/pedidos")
+    public Map<String, Object> crearPedido(
+            @org.springframework.web.bind.annotation.RequestBody Map<String, Object> pedido) {
+        // El BFF recibe el pedido de Angular y lo reenvía al microservicio de pedidos
+        return pedidosClient.crearPedido(pedido);
     }
 }
