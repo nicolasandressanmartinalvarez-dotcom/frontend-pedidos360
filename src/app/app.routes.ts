@@ -3,6 +3,7 @@ import { LoginComponent } from './login/login';
 import { DashboardComponent } from './dashboard/dashboard';
 import { OrdersComponent } from './orders/orders';
 import { CatalogComponent } from './catalog/catalog';
+import { ClienteCompraComponent } from './cliente-compra/cliente-compra';
 import { MsalGuard } from '@azure/msal-angular';
 import { roleGuard } from './guards/role.guard';
 
