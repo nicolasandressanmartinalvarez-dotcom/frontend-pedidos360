@@ -69,7 +69,17 @@ export class DashboardComponent implements OnInit {
       });
     }
   }
+  isAdmin(): boolean {
+    return this.rolesUsuario.includes('ROLE_ADMINISTRADOR') || this.rolesUsuario.includes('Admin');
+  }
 
+  isOperador(): boolean {
+    return this.rolesUsuario.includes('ROLE_OPERADOR') || this.rolesUsuario.includes('Operador');
+  }
+
+  isCliente(): boolean {
+    return this.rolesUsuario.includes('ROLE_CLIENTE') || this.rolesUsuario.includes('Cliente');
+  }
   cerrarSesion() {
     this.authService.logoutRedirect();
   }

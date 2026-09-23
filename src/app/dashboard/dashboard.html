@@ -30,21 +30,21 @@
             </tbody>
         </table>
     </div>
-    <div *ngIf="pedidos.length > 0 && !rolesUsuario.includes('Admin')" style="margin-top: 20px;">
-        <h3>Mis Pedidos (Desde AWS)</h3>
+    <div *ngIf="productos.length > 0 && (isAdmin() || isOperador())" style="margin-top: 20px;">
+        <h3>Catálogo de Productos (Desde AWS) 📦</h3>
         <table style="width: 100%; border-collapse: collapse;" border="1">
             <thead style="background-color: #f2f2f2;">
                 <tr>
                     <th style="padding: 8px;">ID</th>
-                    <th style="padding: 8px;">Estado</th>
-                    <th style="padding: 8px;">Total</th>
+                    <th style="padding: 8px;">Nombre</th>
+                    <th style="padding: 8px;">Precio</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let ped of pedidos">
-                    <td style="padding: 8px; text-align: center;">{{ ped.id }}</td>
-                    <td style="padding: 8px;">{{ ped.estado }}</td>
-                    <td style="padding: 8px; text-align: right;">${{ ped.total }}</td>
+                <tr *ngFor="let prod of productos">
+                    <td style="padding: 8px; text-align: center;">{{ prod.id }}</td>
+                    <td style="padding: 8px;">{{ prod.nombre }}</td>
+                    <td style="padding: 8px; text-align: right;">${{ prod.precio }}</td>
                 </tr>
             </tbody>
         </table>
