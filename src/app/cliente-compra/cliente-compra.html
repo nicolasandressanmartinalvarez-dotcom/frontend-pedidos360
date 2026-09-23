@@ -1,0 +1,61 @@
+<div style="padding: 40px; font-family: Arial, sans-serif; max-width: 900px; margin: auto;">
+
+    <!-- Encabezado -->
+    <div style="margin-bottom: 25px;">
+        <h2>🛒 Catálogo de Compras - Cliente</h2>
+        <p style="color: #666;">Selecciona el producto que deseas adquirir y haz clic en "Comprar" para generar tu
+            pedido.</p>
+    </div>
+
+    <!-- Mensajes de Estado -->
+    <div *ngIf="mensajeExito"
+        style="padding: 12px; background: #e1dfdd; color: #107C10; border-radius: 6px; margin-bottom: 20px; font-weight: bold;">
+        {{ mensajeExito }}
+    </div>
+    <div *ngIf="errorMessage"
+        style="padding: 12px; background: #fde8e8; color: #c53030; border-radius: 6px; margin-bottom: 20px;">
+        {{ errorMessage }}
+    </div>
+
+    <!-- Cuadrícula de Productos -->
+    <div *ngIf="productos.length > 0"
+        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px;">
+        <div *ngFor="let prod of productos"
+            style="background: white; border: 1px solid #e1dfdd; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between;">
+
+            <div>
+                <h3 style="margin-top: 0; color: #333; font-size: 18px;">{{ prod.nombre || prod.name }}</h3>
+                <p style="color: #666; font-size: 14px; margin-bottom: 15px;">Stock disponible: <strong>{{ prod.stock
+                        }}</strong></p>
+            </div>
+
+            <div>
+                <div style="font-size: 20px; font-weight: bold; color: #0078D4; margin-bottom: 15px;">
+                    ${{ prod.precio || prod.price }}
+                </div>
+
+                <!-- Botón de compra -->
+                <button (click)="comprarProducto(prod)" style="
+                    width: 100%;
+                    background-color: #107C10;
+                    color: white;
+                    border: none;
+                    padding: 10px 15px;
+                    font-size: 14px;
+                    font-weight: bold;
+                    border-radius: 6px;
+                    cursor: pointer;" onmouseover="this.style.backgroundColor='#0b5b0b'"
+                    onmouseout="this.style.backgroundColor='#107C10'">
+                    Comprar Ahora
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Mensaje si la lista está vacía -->
+    <div *ngIf="productos.length === 0 && !errorMessage" style="text-align: center; color: #888; padding: 40px;">
+        Cargando productos disponibles...
+    </div>
+
+</div>

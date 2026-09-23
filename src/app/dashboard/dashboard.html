@@ -54,8 +54,26 @@
         style="padding: 10px 15px; cursor: pointer; background-color: #D13438; color: white; border: none; border-radius: 4px;">
         Cerrar Sesión
     </button>
-    <div style="margin: 20px 0; display: flex; gap: 10px;">
+
+    <!-- Botones de navegación actualizados con el acceso a la compra del cliente -->
+    <div style="margin: 20px 0; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
         <button routerLink="/catalog" class="btn btn-primary">Ir al Catálogo de Productos</button>
         <button routerLink="/orders" class="btn btn-secondary">Gestionar / Ver Pedidos</button>
+
+        <!-- Nuevo botón directo para la vista de compras -->
+        <a routerLink="/cliente-compra" style="
+            display: inline-block;
+            background-color: #107C10;
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 14px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: background 0.2s;" onmouseover="this.style.backgroundColor='#0b5b0b'"
+            onmouseout="this.style.backgroundColor='#107C10'">
+            🛒 Ir a Comprar Productos
+        </a>
     </div>
 </div>
