@@ -1,22 +1,67 @@
-<div style="padding: 20px;">
-    <h2>Gestión de Pedidos</h2>
-    <table border="1" style="width: 100%; border-collapse: collapse; margin-top: 20px; text-align: left;">
-        <thead>
-            <tr style="background-color: #f2f2f2;">
-                <th style="padding: 10px;">ID Pedido</th>
-                <th style="padding: 10px;">Cliente</th>
-                <th style="padding: 10px;">Estado Actual</th>
-                <th style="padding: 10px;">Acciones</th>
+<div style="padding: 30px; font-family: Arial, sans-serif; max-width: 1000px; margin: auto;">
+    
+    <!-- Encabezado y Botón Bonito -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2>Gestión de Pedidos</h2>
+        
+        <!-- Botón Bonito Moderno -->
+        <button (click)="crearNuevoPedido()" style="
+            background: linear-gradient(135deg, #0078D4, #005A9E);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 120, 212, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;"
+            onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 12px rgba(0, 120, 212, 0.4)';"
+            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0, 120, 212, 0.3)';">
+            <span style="font-size: 18px; line-height: 1;">+</span> Crear Nuevo Pedido
+        </button>
+    </div>
+
+    <hr style="border: 0; border-top: 1px solid #eaeaea; margin-bottom: 20px;">
+
+    <!-- Mensaje de error si falla -->
+    <div *ngIf="errorMessage" style="padding: 10px; background: #fde8e8; color: #c53030; border-radius: 4px; margin-bottom: 15px;">
+        {{ errorMessage }}
+    </div>
+
+    <!-- Tabla de Pedidos -->
+    <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);" border="1" bordercolor="#e0e0e0">
+        <thead style="background-color: #f8f9fa; color: #333;">
+            <tr>
+                <th style="padding: 12px; text-align: center;">ID Pedido</th>
+                <th style="padding: 12px; text-align: left;">Cliente</th>
+                <th style="padding: 12px; text-align: center;">Estado Actual</th>
+                <th style="padding: 12px; text-align: right;">Total</th>
+                <th style="padding: 12px; text-align: center;">Acciones Operativas</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let o of orders">
-                <td style="padding: 10px;">{{ o.id }}</td>
-                <td style="padding: 10px;">{{ o.clientEmail || 'Cliente' }}</td>
-                <td style="padding: 10px;"><span style="font-weight: bold;">{{ o.status }}</span></td>
-                <td style="padding: 10px;">
-                    <button (click)="updateOrderStatus(o.id, 'ACEPTADO')"
-                        style="padding: 5px 10px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">Aceptar</button>
+            <tr *ngFor="let ped of orders" style="border-bottom: 1px solid #f0f0f0;">
+                <td style="padding: 12px; text-align: center; font-weight: bold;">{{ ped.id }}</td>
+                <td style="padding: 12px;">{{ ped.username }}</td>
+                <td style="padding: 12px; text-align: center;">
+                    <span style="padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; background: #e1dfdd; color: #333;">
+                        {{ ped.estado }}
+                    </span>
+                </td>
+                <td style="padding: 12px; text-align: right; font-weight: bold; color: #107C10;">${{ ped.total }}</td>
+                <td style="padding: 12px; text-align: center;">
+                    <!-- Botones para simular cambio de estado (Rol Operador) -->
+                    <button (click)="cambiarEstado(ped.id, 'ACEPTADO')" style="background: #0078D4; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; margin-right: 4px;">Aceptar</button>
+                    <button (click)="cambiarEstado(ped.id, 'DESPACHADO')" style="background: #107C10; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 11px;">Despachar</button>
+                </td>
+            </tr>
+            <tr *ngIf="orders.length === 0">
+                <td colspan="5" style="padding: 30px; text-align: center; color: #666;">
+                    No hay pedidos registrados en este momento. ¡Haz clic en "Crear Nuevo Pedido" para agregar uno!
                 </td>
             </tr>
         </tbody>
