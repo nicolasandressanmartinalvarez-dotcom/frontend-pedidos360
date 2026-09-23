@@ -11,7 +11,8 @@
         <strong>Estado del BFF:</strong> {{ mensajeBff }}
     </div>
 
-    <div *ngIf="productos.length > 0 && rolesUsuario.includes('Admin')" style="margin-top: 20px;">
+    <!-- Catálogo visible para todos los roles (Admin, Operador, Cliente)[cite: 18] -->
+    <div *ngIf="productos.length > 0" style="margin-top: 20px;">
         <h3>Catálogo de Productos (Desde AWS)</h3>
         <table style="width: 100%; border-collapse: collapse;" border="1">
             <thead style="background-color: #f2f2f2;">
@@ -30,12 +31,15 @@
             </tbody>
         </table>
     </div>
-    <div *ngIf="pedidos.length > 0 && !rolesUsuario.includes('Admin')" style="margin-top: 20px;">
-        <h3>Mis Pedidos (Desde AWS)</h3>
+
+    <!-- Sección de Pedidos (Filtrada según el rol)[cite: 18] -->
+    <div *ngIf="pedidos.length > 0" style="margin-top: 20px;">
+        <h3>{{ isCliente ? 'Mis Pedidos' : 'Gestión Global de Pedidos' }}</h3>
         <table style="width: 100%; border-collapse: collapse;" border="1">
             <thead style="background-color: #f2f2f2;">
                 <tr>
-                    <th style="padding: 8px;">ID</th>
+                    <th style="padding: 8px;">ID Pedido</th>
+                    <th *ngIf="!isCliente" style="padding: 8px;">Cliente</th>
                     <th style="padding: 8px;">Estado</th>
                     <th style="padding: 8px;">Total</th>
                 </tr>
@@ -43,6 +47,7 @@
             <tbody>
                 <tr *ngFor="let ped of pedidos">
                     <td style="padding: 8px; text-align: center;">{{ ped.id }}</td>
+                    <td *ngIf="!isCliente" style="padding: 8px;">{{ ped.username }}</td>
                     <td style="padding: 8px;">{{ ped.estado }}</td>
                     <td style="padding: 8px; text-align: right;">${{ ped.total }}</td>
                 </tr>
@@ -50,12 +55,17 @@
         </table>
     </div>
 
+    <div style="margin: 20px 0; display: flex; gap: 10px;">
+        <button routerLink="/catalog"
+            style="padding: 10px 15px; cursor: pointer; background-color: #0078D4; color: white; border: none; border-radius: 4px;">Ir
+            al Catálogo</button>
+        <button routerLink="/orders"
+            style="padding: 10px 15px; cursor: pointer; background-color: #107C10; color: white; border: none; border-radius: 4px;">Gestionar
+            / Ver Pedidos</button>
+    </div>
+
     <button (click)="cerrarSesion()"
         style="padding: 10px 15px; cursor: pointer; background-color: #D13438; color: white; border: none; border-radius: 4px;">
         Cerrar Sesión
     </button>
-    <div style="margin: 20px 0; display: flex; gap: 10px;">
-        <button routerLink="/catalog" class="btn btn-primary">Ir al Catálogo de Productos</button>
-        <button routerLink="/orders" class="btn btn-secondary">Gestionar / Ver Pedidos</button>
-    </div>
 </div>
