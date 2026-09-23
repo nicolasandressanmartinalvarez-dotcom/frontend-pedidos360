@@ -55,4 +55,8 @@ public class BffController {
         // El BFF recibe el pedido de Angular y lo reenvía al microservicio de pedidos
         return pedidosClient.crearPedido(pedido);
     }
+    @PostMapping("/productos")
+    public Map<String, Object> guardarProducto(@RequestBody Map<String, Object> producto) {
+        return catalogoClient.guardarProducto(producto);
+    }
 }
