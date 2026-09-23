@@ -31,25 +31,21 @@
             </tbody>
         </table>
     </div>
-
-    <!-- Sección de Pedidos (Filtrada según el rol)[cite: 18] -->
-    <div *ngIf="pedidos.length > 0" style="margin-top: 20px;">
-        <h3>{{ isCliente ? 'Mis Pedidos' : 'Gestión Global de Pedidos' }}</h3>
+    <div *ngIf="productos.length > 0 && (isAdmin() || isOperador())" style="margin-top: 20px;">
+        <h3>Catálogo de Productos (Desde AWS) 📦</h3>
         <table style="width: 100%; border-collapse: collapse;" border="1">
             <thead style="background-color: #f2f2f2;">
                 <tr>
-                    <th style="padding: 8px;">ID Pedido</th>
-                    <th *ngIf="!isCliente" style="padding: 8px;">Cliente</th>
-                    <th style="padding: 8px;">Estado</th>
-                    <th style="padding: 8px;">Total</th>
+                    <th style="padding: 8px;">ID</th>
+                    <th style="padding: 8px;">Nombre</th>
+                    <th style="padding: 8px;">Precio</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let ped of pedidos">
-                    <td style="padding: 8px; text-align: center;">{{ ped.id }}</td>
-                    <td *ngIf="!isCliente" style="padding: 8px;">{{ ped.username }}</td>
-                    <td style="padding: 8px;">{{ ped.estado }}</td>
-                    <td style="padding: 8px; text-align: right;">${{ ped.total }}</td>
+                <tr *ngFor="let prod of productos">
+                    <td style="padding: 8px; text-align: center;">{{ prod.id }}</td>
+                    <td style="padding: 8px;">{{ prod.nombre }}</td>
+                    <td style="padding: 8px; text-align: right;">${{ prod.precio }}</td>
                 </tr>
             </tbody>
         </table>
@@ -68,4 +64,20 @@
         style="padding: 10px 15px; cursor: pointer; background-color: #D13438; color: white; border: none; border-radius: 4px;">
         Cerrar Sesión
     </button>
+
+    <!-- Botones de navegación actualizados con el acceso a la compra del cliente -->
+    <div style="margin: 20px 0; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+        
+        <button routerLink="/orders" class="btn btn-secondary">Gestionar / Ver Pedidos</button>
+        <div style="margin: 20px 0; display: flex; gap: 10px; flex-wrap: wrap;">
+            <button routerLink="/catalog" style="padding: 10px 15px; background: #0078D4; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                Ir al Catálogo de Productos
+            </button>
+            <button routerLink="/cliente-compra" style="padding: 10px 15px; background: #00bcf2; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                Tienda / Comprar Productos 🛒
+            </button>
+            <button *ngIf="isAdmin() || isCliente()" routerLink="/orders" style="padding: 10px 15px; background: #107C10; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                Gestionar / Ver Pedidos
+            </button>
+        </div>
 </div>
