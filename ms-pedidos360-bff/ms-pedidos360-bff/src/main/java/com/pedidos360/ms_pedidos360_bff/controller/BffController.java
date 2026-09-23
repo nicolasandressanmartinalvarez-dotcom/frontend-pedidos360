@@ -47,4 +47,12 @@ public class BffController {
         return pedidosClient.obtenerPedidos();
 
     }
+
+    // --- NUEVO ENDPOINT PARA CREAR UN PEDIDO ---
+    @org.springframework.web.bind.annotation.PostMapping("/pedidos")
+    public Map<String, Object> crearPedido(
+            @org.springframework.web.bind.annotation.RequestBody Map<String, Object> pedido) {
+        // El BFF recibe el pedido de Angular y lo reenvía al microservicio de pedidos
+        return pedidosClient.crearPedido(pedido);
+    }
 }
