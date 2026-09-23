@@ -47,4 +47,8 @@ public class BffController {
         return pedidosClient.obtenerPedidos();
 
     }
+    @PostMapping("/productos")
+    public Map<String, Object> guardarProducto(@RequestBody Map<String, Object> producto) {
+        return catalogoClient.guardarProducto(producto);
+    }
 }
