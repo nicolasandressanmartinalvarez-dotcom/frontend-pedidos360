@@ -26,12 +26,23 @@ export class DashboardComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) { }
 
+  get isAdmin(): boolean {
+    return this.rolesUsuario.some(r => r.toUpperCase().includes('ADMINISTRADOR') || r.toLowerCase() === 'admin');
+  }
+
+  get isOperador(): boolean {
+    return this.rolesUsuario.some(r => r.toUpperCase().includes('OPERADOR'));
+  }
+
+  get isCliente(): boolean {
+    return this.rolesUsuario.some(r => r.toUpperCase().includes('CLIENTE'));
+  }
+
   ngOnInit(): void {
     const cuenta = this.authService.instance.getActiveAccount();
     if (cuenta) {
       this.nombreUsuario = cuenta.name || 'Usuario';
 
-      // Buscamos los roles dentro de los "claims" del token de Azure
       if (cuenta.idTokenClaims && cuenta.idTokenClaims['roles']) {
         this.rolesUsuario = cuenta.idTokenClaims['roles'] as string[];
       } else {
@@ -39,31 +50,35 @@ export class DashboardComponent implements OnInit {
       }
     }
 
-    // Hacemos la petición al BFF usando la IP de AWS desde el environment
     if (isPlatformBrowser(this.platformId)) {
+      // Cargar Catálogo (permitido para todos los roles)
       this.http.get<any>(`${environment.apiUrl}/api/productos`).subscribe({
         next: (respuesta) => {
-          console.log('PRODUCTOS DESDE EL BFF:', respuesta);
           this.productos = respuesta;
-          this.mensajeBff = '¡Productos cargados exitosamente!';
+          this.mensajeBff = '¡Datos cargados exitosamente desde AWS!';
           this.cdr.detectChanges();
         },
         error: (err) => {
           console.error('ERROR:', err);
-          this.mensajeBff = 'Error al conectar';
+          this.mensajeBff = 'Error al conectar con el catálogo';
           this.cdr.detectChanges();
         }
       });
+
+      // Cargar Pedidos
       this.http.get<any>(`${environment.apiUrl}/api/pedidos`).subscribe({
         next: (respuesta) => {
-          console.log('PEDIDOS DESDE EL BFF:', respuesta);
-          this.pedidos = respuesta;
-          this.mensajeBff = '¡Pedidos cargados exitosamente!';
+          if (this.isCliente) {
+            // El cliente solo ve sus propios pedidos[cite: 18]
+            this.pedidos = respuesta.filter((p: any) => p.username === this.nombreUsuario);
+          } else {
+            // Admin y Operador ven todos los pedidos[cite: 18]
+            this.pedidos = respuesta;
+          }
           this.cdr.detectChanges();
         },
         error: (err) => {
           console.error('ERROR:', err);
-          this.mensajeBff = 'Error al conectar';
           this.cdr.detectChanges();
         }
       });
