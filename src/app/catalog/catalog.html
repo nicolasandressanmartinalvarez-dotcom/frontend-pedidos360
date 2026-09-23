@@ -1,20 +1,46 @@
-<div style="padding: 20px;">
-    <h2>Catálogo de Productos</h2>
-    <table border="1" style="width: 100%; border-collapse: collapse; margin-top: 20px; text-align: left;">
+<div style="padding: 20px; font-family: Arial, sans-serif;">
+    <h2>Catálogo de Productos 📦</h2>
+    <hr style="margin-bottom: 20px;">
+
+    <!-- Formulario para agregar un nuevo producto -->
+    <div style="margin-bottom: 25px; padding: 15px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 6px;">
+        <h3 style="margin-top: 0;">Agregar Nuevo Producto ➕</h3>
+        <form (submit)="addProduct()" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <input type="text" [(ngModel)]="newProduct.nombre" name="nombre" placeholder="Nombre del producto" required style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+            <input type="number" [(ngModel)]="newProduct.precio" name="precio" placeholder="Precio ($)" required style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+            <input type="number" [(ngModel)]="newProduct.stock" name="stock" placeholder="Stock disponible" required style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+            <button type="submit" style="padding: 8px 15px; background: #28a745; color: white; border: none; cursor: pointer; border-radius: 4px; font-weight: bold;">
+                Guardar Producto
+            </button>
+        </form>
+    </div>
+
+    <!-- Mensaje de error si ocurre algún fallo -->
+    <div *ngIf="errorMessage" style="color: #D13438; margin-bottom: 15px; font-weight: bold;">
+        {{ errorMessage }}
+    </div>
+
+    <!-- Tabla con los productos cargados desde AWS -->
+    <table border="1" style="width: 100%; border-collapse: collapse; text-align: left;">
         <thead>
             <tr style="background-color: #f2f2f2;">
-                <th style="padding: 10px;">ID</th>
+                <th style="padding: 10px; text-align: center;">ID</th>
                 <th style="padding: 10px;">Producto</th>
                 <th style="padding: 10px;">Precio</th>
-                <th style="padding: 10px;">Stock</th>
+                <th style="padding: 10px; text-align: center;">Stock</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let p of products">
-                <td style="padding: 10px;">{{ p.id }}</td>
+                <td style="padding: 10px; text-align: center;">{{ p.id }}</td>
                 <td style="padding: 10px;">{{ p.nombre || p.name }}</td>
                 <td style="padding: 10px;">${{ p.precio || p.price }}</td>
-                <td style="padding: 10px;">{{ p.stock }}</td>
+                <td style="padding: 10px; text-align: center;">{{ p.stock }}</td>
+            </tr>
+            <tr *ngIf="products.length === 0">
+                <td colspan="4" style="padding: 15px; text-align: center; color: #777;">
+                    No hay productos registrados en el catálogo.
+                </td>
             </tr>
         </tbody>
     </table>
