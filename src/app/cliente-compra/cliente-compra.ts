@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
@@ -14,7 +14,10 @@ export class ClienteCompraComponent implements OnInit {
     mensajeExito: string = '';
     errorMessage: string = '';
 
-    constructor(private http: HttpClient) { }
+    constructor(
+        private http: HttpClient,
+        private cdr: ChangeDetectorRef // 1. Inyectamos ChangeDetectorRef
+    ) { }
 
     ngOnInit(): void {
         this.cargarProductos();
@@ -29,10 +32,12 @@ export class ClienteCompraComponent implements OnInit {
             next: (data) => {
                 console.log('Datos de productos obtenidos con éxito:', data);
                 this.productos = data || [];
+                this.cdr.detectChanges(); // 2. Forzamos a Angular a actualizar la vista
             },
             error: (err) => {
                 console.error('Error detallado al conectar con el BFF:', err);
                 this.errorMessage = `Error ${err.status}: No se pudo conectar con el catálogo en ${apiUrl}`;
+                this.cdr.detectChanges(); // 3. Actualizamos la vista también en caso de error
             }
         });
     }
@@ -40,7 +45,7 @@ export class ClienteCompraComponent implements OnInit {
     // Acción para comprar el producto seleccionado
     comprarProducto(producto: any): void {
         const nuevoPedido = {
-            username: "nicolas.cliente", // Usuario cliente actual
+            username: "nicolas.cliente",
             estado: "CREADO",
             total: producto.precio || producto.price,
             detalles: [
@@ -57,11 +62,16 @@ export class ClienteCompraComponent implements OnInit {
             next: (res) => {
                 this.mensajeExito = `¡Compra realizada con éxito para: ${producto.nombre || producto.name}!`;
                 this.errorMessage = '';
-                setTimeout(() => this.mensajeExito = '', 4000);
+                this.cdr.detectChanges();
+                setTimeout(() => {
+                    this.mensajeExito = '';
+                    this.cdr.detectChanges();
+                }, 4000);
             },
             error: (err) => {
                 console.error('Error al procesar la compra:', err);
                 this.errorMessage = 'Hubo un error al procesar tu compra.';
+                this.cdr.detectChanges();
             }
         });
     }
