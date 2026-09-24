@@ -26,7 +26,7 @@ export const routes: Routes = [
         path: 'cliente-compra', 
         component: ClienteCompraComponent, 
         canActivate: [MsalGuard, roleGuard],
-        data: { roles: ['ROLE_CLIENTE', 'Cliente', 'ROLE_ADMINISTRADOR', 'Admin'] }
+        data: { roles: ['ROLE_CLIENTE', 'Cliente', 'ROLE_ADMINISTRADOR', 'Admin','Operador','ROLE_OPERADOR'] }
     },
 
     { path: '**', redirectTo: '' }
