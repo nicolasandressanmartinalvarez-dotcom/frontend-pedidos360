@@ -38,14 +38,14 @@
 
     <!-- Botones de navegación actualizados con el acceso a la compra del cliente -->
     <div style="margin: 20px 0; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-            <button routerLink="/catalog" style="padding: 10px 15px; background: #0078D4; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                Ir al Catálogo de Productos
-            </button>
-            <button routerLink="/cliente-compra" style="padding: 10px 15px; background: #00bcf2; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                Tienda / Comprar Productos 🛒
-            </button>
-            <button *ngIf="isAdmin() || isCliente()" routerLink="/orders" style="padding: 10px 15px; background: #107C10; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                Gestionar / Ver Pedidos
-            </button>
+        <button routerLink="/catalog" style="padding: 10px 15px; background: #0078D4; color: white; border: none; border-radius: 4px; cursor: pointer;">
+            Ir al Catálogo de Productos
+        </button>
+        <button routerLink="/cliente-compra" style="padding: 10px 15px; background: #00bcf2; color: white; border: none; border-radius: 4px; cursor: pointer;">
+            Tienda / Comprar Productos 🛒
+        </button>
+        <button *ngIf="isAdmin() || isCliente()" routerLink="/orders" style="padding: 10px 15px; background: #107C10; color: white; border: none; border-radius: 4px; cursor: pointer;">
+            Gestionar / Ver Pedidos
+        </button>
     </div>
 </div>
