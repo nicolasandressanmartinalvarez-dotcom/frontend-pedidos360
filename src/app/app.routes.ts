@@ -29,5 +29,5 @@ export const routes: Routes = [
         data: { roles: ['ROLE_CLIENTE', 'Cliente', 'ROLE_ADMINISTRADOR', 'Admin','Operador','ROLE_OPERADOR'] }
     },
 
-    { path: '**', redirectTo: '' }
+    { path: '**', redirectTo: '/dashboard' }
 ];

@@ -15,6 +15,37 @@
       "request": "launch",
       "preLaunchTask": "npm: test",
       "url": "http://localhost:9876/debug.html"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-MsPedidos360BffApplication<ms-pedidos360-bff>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.pedidos360.ms_pedidos360_bff.MsPedidos360BffApplication",
+      "projectName": "ms-pedidos360-bff",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env",
+      "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=63022 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=ms-pedidos360-bff"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-MsCatalogoApplication<ms-catalogo>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.pedidos360.ms_catalogo.MsCatalogoApplication",
+      "projectName": "ms-catalogo",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-MsPedidos360OrdersApplication<ms-pedidos360-orders>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.pedidos360_orders.ms_pedidos360_orders.MsPedidos360OrdersApplication",
+      "projectName": "ms-pedidos360-orders",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
     }
   ]
 }
